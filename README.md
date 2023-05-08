@@ -12,3 +12,4 @@ It bundles some 3rd libraries as source, [hopefully] respecting their licenses:
 
 * https://github.com/yaoyao-cn/md5
 * https://github.com/open-source-parsers/jsoncpp
+* https://github.com/bulletphysics/bullet3
