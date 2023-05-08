@@ -1,0 +1,40 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="/Chessboard.fsh">shaders/Chessboard.fsh</file>
+        <file alias="/Chessboard.vsh">shaders/Chessboard.vsh</file>
+        <file alias="/Chesspiece.fsh">shaders/Chesspiece.fsh</file>
+        <file alias="/Chesspiece.vsh">shaders/Chesspiece.vsh</file>
+        <file alias="/Skybox.fsh">shaders/Skybox.fsh</file>
+        <file alias="/Skybox.vsh">shaders/Skybox.vsh</file>
+        <file alias="/ChesspieceReflection.fsh">shaders/ChesspieceReflection.fsh</file>
+        <file alias="/ChesspieceReflection.vsh">shaders/ChesspieceReflection.vsh</file>
+        <file alias="/SimpleColor.fsh">shaders/SimpleColor.fsh</file>
+        <file alias="/SimpleColor.vsh">shaders/SimpleColor.vsh</file>
+        <file alias="/SimpleTexture.fsh">shaders/SimpleTexture.fsh</file>
+        <file alias="/SimpleTexture.vsh">shaders/SimpleTexture.vsh</file>
+        <file alias="/PhysicsStageDefault.fsh">shaders/PhysicsStageDefault.fsh</file>
+        <file alias="/PhysicsStageDefault.vsh">shaders/PhysicsStageDefault.vsh</file>
+        <file alias="/Terrain.fsh">shaders/Terrain.fsh</file>
+        <file alias="/Terrain.vsh">shaders/Terrain.vsh</file>
+        <file alias="/ShadowMap.fsh">shaders/ShadowMap.fsh</file>
+        <file alias="/ShadowMap.vsh">shaders/ShadowMap.vsh</file>
+        <file alias="/ShadowMapTransparent.fsh">shaders/ShadowMapTransparent.fsh</file>
+        <file alias="/ShadowMapTransparent.vsh">shaders/ShadowMapTransparent.vsh</file>
+        <file alias="/Vehicle.fsh">shaders/Vehicle.fsh</file>
+        <file alias="/Vehicle.vsh">shaders/Vehicle.vsh</file>
+        <file alias="/VertexLight.fsh">shaders/VertexLight.fsh</file>
+        <file alias="/VertexLight.vsh">shaders/VertexLight.vsh</file>
+        <file alias="/PixelLight.fsh">shaders/PixelLight.fsh</file>
+        <file alias="/PixelLight.vsh">shaders/PixelLight.vsh</file>
+        <file alias="/CombineBlur.fsh">shaders/CombineBlur.fsh</file>
+        <file alias="/CombineBlur.vsh">shaders/CombineBlur.vsh</file>
+        <file alias="/XBlur.fsh">shaders/XBlur.fsh</file>
+        <file alias="/XBlur.vsh">shaders/XBlur.vsh</file>
+        <file alias="/YBlur.fsh">shaders/YBlur.fsh</file>
+        <file alias="/YBlur.vsh">shaders/YBlur.vsh</file>
+        <file alias="/MappedLight.fsh">shaders/MappedLight.fsh</file>
+        <file alias="/MappedLight.vsh">shaders/MappedLight.vsh</file>
+        <file alias="/ImageWidget.fsh">shaders/ImageWidget.fsh</file>
+        <file alias="/ImageWidget.vsh">shaders/ImageWidget.vsh</file>
+    </qresource>
+</RCC>

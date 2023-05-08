@@ -1,0 +1,38 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="/brick_wall.jpg">textures/brick_wall.jpg</file>
+        <file alias="/pillars_skybox_back.jpg">textures/pillars_skybox_back.jpg</file>
+        <file alias="/pillars_skybox_bottom.jpg">textures/pillars_skybox_bottom.jpg</file>
+        <file alias="/pillars_skybox_front.jpg">textures/pillars_skybox_front.jpg</file>
+        <file alias="/pillars_skybox_left.jpg">textures/pillars_skybox_left.jpg</file>
+        <file alias="/pillars_skybox_right.jpg">textures/pillars_skybox_right.jpg</file>
+        <file alias="/pillars_skybox_top.jpg">textures/pillars_skybox_top.jpg</file>
+        <file alias="/terrain_seamless.jpg">textures/terrain_seamless.jpg</file>
+        <file alias="/tree_bark.jpg">textures/tree_bark.jpg</file>
+        <file alias="/tree_leaves.png">textures/tree_leaves.png</file>
+        <file alias="/lens_flares.jpg">textures/lens_flares.jpg</file>
+        <file alias="/walkway.jpg">textures/walkway.jpg</file>
+        <file alias="/cliffside.jpg">textures/cliffside.jpg</file>
+        <file alias="/dark_marble.jpg">textures/dark_marble.jpg</file>
+        <file alias="/white_marble.jpg">textures/white_marble.jpg</file>
+        <file alias="/chessboard.jpg">textures/chessboard.jpg</file>
+        <file alias="/buggy_blue.jpg">textures/buggy_blue.jpg</file>
+        <file alias="/buggy_normalmap.jpg">textures/buggy_normalmap.jpg</file>
+        <file alias="/space_skybox_back.jpg">textures/space_skybox_back.jpg</file>
+        <file alias="/space_skybox_bottom.jpg">textures/space_skybox_bottom.jpg</file>
+        <file alias="/space_skybox_front.jpg">textures/space_skybox_front.jpg</file>
+        <file alias="/space_skybox_left.jpg">textures/space_skybox_left.jpg</file>
+        <file alias="/space_skybox_right.jpg">textures/space_skybox_right.jpg</file>
+        <file alias="/space_skybox_top.jpg">textures/space_skybox_top.jpg</file>
+        <file alias="/start_button.png">textures/start_button.png</file>
+        <file alias="/menu_background.jpg">textures/menu_background.jpg</file>
+        <file alias="/score_font.png">textures/score_font.png</file>
+        <file alias="/menu_background_maps.jpg">textures/menu_background_maps.jpg</file>
+        <file alias="/info_button.png">textures/info_button.png</file>
+        <file alias="/analyze_button.png">textures/analyze_button.png</file>
+        <file alias="/demo_button.png">textures/demo_button.png</file>
+        <file alias="/cputest_button.png">textures/cputest_button.png</file>
+        <file alias="/fulltest_button.png">textures/fulltest_button.png</file>
+        <file alias="/exit_button.png">textures/exit_button.png</file>
+    </qresource>
+</RCC>

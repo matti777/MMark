@@ -1,0 +1,16 @@
+1. Build the release package: 
+   * build with Release in Necessitas QtCreator
+   * run 'ant release'
+
+2. Sign the package: 
+
+jarsigner -verbose -sigalg MD5withRSA -digestalg SHA1 -keystore ../android_release.keystore MMark13-release-unsigned.apk kala
+
+3. zipalign the package:
+
+zipalign -v 4 MMark13-release-unsigned.apk MMark13.apk
+
+KEYSTORE INFO
+
+The keystore / certificate passwords are both 'kalakala'. 
+Key alias is 'kala'.

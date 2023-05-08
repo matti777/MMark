@@ -1,0 +1,49 @@
+
+MySQL database setup
+###########################################
+
+Create the database with UTF8 character set, like so:
+
+CREATE DATABASE mmark_dev CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+Or alter later:
+
+ALTER DATABASE mmark_dev CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+Find out the current values like so:
+
+show variables like "character_set_database";
+show variables like "collation_database";
+
+pytz setup
+###########################################
+
+Download & install instructions from: 
+https://pypi.python.org/pypi/pytz/
+
+
+GeoIP setup
+###########################################
+
+See:
+ * https://docs.djangoproject.com/en/dev/ref/contrib/gis/geoip/
+ * http://www.maxmind.com/app/license_key
+ * http://maxmind.com/download/geoip/api/c/
+
+Install MaxMin GeoIP C Api:
+ * wget http://maxmind.com/download/geoip/api/c/GeoIP.tar.gz
+ * tar zxvf GeoIP.tar.gz
+ * cd GeoIP<tab>
+ * Follow README/INSTALL instructions:
+./configure
+make
+make check
+make install (as root)
+
+Get the data files:
+ * http://www.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz
+ * http://www.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz
+ * http://www.maxmind.com/download/geoip/database/GeoIPv6.dat.gz
+ * gunzip these
+ * set up a weekly crontab for re-retrieving for any updates
+

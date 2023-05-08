@@ -1,0 +1,18 @@
+<table class="scorechart">
+{% for score in scores %}
+<tr>
+<td>
+<img class="flag" src="/static/images/flags/{{ score.country_code|lower }}.png"
+     alt="{{ score.country_code }}" title="{{ score.country }}">
+{{ score.name|default:"--" }}</td>
+<td>{{ score.device }}</td>
+<td>
+<a class="graph" href="view_score?uuid={{ score.uuid }}">
+<div style="width:{{ score.bar_length }}px" class="graph">
+<span>{{ score.score }}</span>
+</div>
+</a>
+</td>
+</tr>
+{% endfor %}
+</table>

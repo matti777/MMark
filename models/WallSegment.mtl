@@ -1,0 +1,26 @@
+# Blender MTL File: 'Wall.blend'
+# Material Count: 2
+newmtl Wall
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd C:/Dokumente und Einstellungen/Lasse/Desktop/GameUnity/Assets/Standard Assets (Mobile)/Textures/Stein/Brick_tiled_TEX.png
+map_Bump C:/Dokumente und Einstellungen/Lasse/Desktop/GameUnity/Assets/Standard Assets (Mobile)/Textures/Stein/Brick_tiled_NOR.png
+
+
+newmtl Wall_Brick_tiled_TEX.png
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd C:/Dokumente und Einstellungen/Lasse/Desktop/GameUnity/Assets/Standard Assets (Mobile)/Textures/Stein/Brick_tiled_TEX.png
+map_Bump C:/Dokumente und Einstellungen/Lasse/Desktop/GameUnity/Assets/Standard Assets (Mobile)/Textures/Stein/Brick_tiled_NOR.png
+
+

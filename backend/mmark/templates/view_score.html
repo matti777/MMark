@@ -1,0 +1,267 @@
+{% extends "basepage.html" %}
+
+{% block content %}
+
+{% if nonce %}
+<script type="text/javascript">
+
+function resizeMask() {
+  var maskHeight = $(document).height();
+  var maskWidth = $(window).width();
+  var mask = $("div.dialog-mask");
+  mask.css({'width':maskWidth,'height':maskHeight});
+}
+ 
+function showPopup() {
+  // make "mask" fill the whole screen
+  resizeMask();
+  $("div.dialog-mask").fadeTo("fast", 0.5);
+  $("div.dialog").show();
+}
+
+function closePopup() {
+  $("div.dialog-mask").hide();
+  $("div.dialog").hide();
+}
+
+function setup() {
+  $("a.cancel").click(function(e) { 
+    closePopup();
+  });
+
+  $("a.submit").click(function(e) { 
+    $("form#nameform").submit();
+  });
+
+  $(document).keyup(function(e) {
+    if ( e.keyCode == 27 ) {
+      // ESC pressed, close dialog
+      closePopup();
+    }
+  });  
+
+  $(window).resize(function() {
+    resizeMask();
+  });  
+
+  // Display the popup initially
+  showPopup();
+}
+
+$(document).ready(setup);
+</script>
+
+<div class="dialog">
+<div class="dialog-content">
+<div class="dialog-header">
+Enter your name
+</div>
+<div class="dialog-text">
+The name entered will be shown alongside your submitted score.
+</div>
+<form method="POST" id="nameform">{% csrf_token %}
+<input type="text" name="name" placeholder="Your name" 
+       value="{{ name|default:"" }}"><br>
+<div class="dialog-buttons">
+<a href="#" class="button cancel">Cancel</a>
+<a href="#" class="button submit">OK</a>
+</div>
+</form>
+</div>
+</div>
+<div class="dialog-mask"></div>
+{% endif %}
+
+{% if missing_features %}
+<div class="errors">
+<p>
+The client detected the following missing / malfunctioning features
+on this device:
+<strong>{{ missing_features }}</strong>
+</p>
+
+<p>
+The score has been scaled down to compensate and is not directly comparable
+to others.
+</p>
+</div>
+{% endif %}
+
+{% if gl_finish_err %}
+<div class="errors">
+<p>
+During the fillrate test, the client detected a possibly malfunctioning
+OpenGL driver on this device; namely, the glFinish() call "falling through"
+before rendering completion. 
+</p>
+
+<p>
+This could, however, be a false positive in
+the case of a very powerful hardware, in which case contact the author.
+</p>
+
+<p>
+The score for the malfunctioning fillrate test has been removed and the 
+score is not directly comparable to others.
+</p>
+</div>
+{% endif %}
+
+<h3 class="score-header">Score</h3>
+
+<table class="data">
+<tr class="total">
+<td>Total:</td><td>{{ score.total_score }}</td>
+</tr>
+<tr class="cpu_fillrate">
+<td>CPU score:</td><td>{{ score.fractal_score }}</td>
+</tr>
+<tr class="cpu_fillrate">
+<td>Fill rate score:</td><td>{{ score.fillrate_score }}</td>
+</tr>
+<tr class="cpu_fillrate">
+<td>Load time score:</td><td>{{ score.loadtime_score }}</td>
+</tr>
+<tr>
+<td>Submitted by:</td><td>{{ score.user_name|default:"" }}</td>
+</tr>
+{% if score.geo_country %} 
+<tr>
+<td>Location:</td><td>{{ score.geo_city }}, {{ score.geo_country }}
+<img class="flag" 
+     src="/static/images/flags/{{ score.geo_country_code|lower }}.png"
+     alt="{{ score.geo_country_code }}" title="{{ score.geo_country }}"></td>
+</tr>
+{% endif %}
+<tr>
+<td>Date:</td><td>{{ score.added|date:"Y-m-d" }}</td>
+</tr>
+</table>
+
+<h3 class="score-header">Fractal Scene: CPU Burn Test</h3>
+
+<table class="data">
+<tr>
+<td>Score:</td><td>{{ score.fractal_score }}</td>
+</tr>
+<tr>
+<td>Loading time:</td><td>{{ score.fractal_loadtime }} seconds</td>
+</tr>
+<tr>
+<td>Number of images calculated:</td><td>{{ score.fractal_num_images }}</td>
+</tr>
+</table>
+
+<h3 class="score-header">Texture Scene: Fillrate Tests</h3>
+
+<table class="data">
+<tr>
+<td>Score:</td><td>{{ score.fillrate_score }}</td>
+</tr>
+<tr>
+<td>Loading time:</td><td>{{ score.fillrate_loadtime }} seconds</td>
+</tr>
+<tr>
+<td>Unlighted fillrate:</td><td>{{ score.unlighted_fillrate }} Mpixel/s</td>
+</tr>
+<tr>
+<td>Per-vertex lighted fillrate:</td>
+<td>{{ score.vertex_lighted_fillrate }} Mpixel/s</td>
+</tr>
+<tr>
+<td>Per-pixel lighted fillrate:</td>
+<td>{{ score.pixel_lighted_fillrate }} Mpixel/s</td>
+</tr>
+<tr>
+<td>Per-pixel lighted & normal/specular mapped fillrate:</td>
+<td>{{ score.mapped_lighted_fillrate }} Mpixel/s</td>
+</tr>
+</table>
+
+<h3 class="score-header">Chess Scene: Multitexturing / Postprocessing Test</h3>
+
+<table class="data">
+<tr>
+<td>Score:</td><td>{{ score.chess_score }}</td>
+</tr>
+<tr>
+<td>Loading time:</td><td>{{ score.chess_loadtime }} seconds</td>
+</tr>
+<tr>
+<td>Average FPS:</td><td>{{ score.chess_fps }}</td>
+</tr>
+</table>
+
+<h3 class="score-header">Mountains Scene: Combined Environment Test</h3>
+
+<table class="data">
+<tr>
+<td>Score:</td><td>{{ score.mountains_score }}</td>
+</tr>
+<tr>
+<td>Loading time:</td><td>{{ score.mountains_loadtime }} seconds</td>
+</tr>
+<tr>
+<td>Average FPS:</td><td>{{ score.mountains_fps }}</td>
+</tr>
+</table>
+
+<h3 class="score-header">Device Info</h3>
+
+<table class="data">
+<tr>
+<td>Manufacturer:</td><td>{{ score.device_type.manufacturer }}</td>
+</tr>
+<tr>
+<td>Model:</td><td>{{ score.device_type.get_model_name }}</td>
+</tr>
+<tr>
+<td>Operating system version:</td><td>{{ score.device_type.os_version }}</td>
+</tr>
+<tr>
+<td>Total RAM:</td><td>{{ score.device_type.total_ram }} kB</td>
+</tr>
+<tr>
+<td>CPU:</td><td>{{ score.device_type.cpu_type }}</td>
+</tr>
+<tr>
+<td>Number of CPU cores:</td><td>{{ score.device_type.num_cpu_cores }}</td>
+</tr>
+<tr>
+<td>CPU max frequency:</td>
+<td>{{ score.device_type.cpu_max_frequency }} MHz</td>
+</tr>
+<tr>
+<td>Screen resolution:</td>
+<td>{{ score.device_type.screen_width }} x 
+{{ score.device_type.screen_height }} pixels</td>
+</tr>
+<tr>
+<td>OpenGL vendor:</td><td>{{ score.device_type.gl_vendor }}</td>
+</tr>
+<tr>
+<td>OpenGL renderer:</td><td>{{ score.device_type.gl_renderer }}</td>
+</tr>
+<tr>
+<td>OpenGL version:</td><td>{{ score.device_type.gl_version }}</td>
+</tr>
+<tr>
+<td>OpenGL Shader Language version:</td>
+<td>{{ score.device_type.glsl_version }}</td>
+</tr>
+</table>
+
+<p>&nbsp;</p>
+<p>
+<div style="text-align:center; margin-top: 1em">
+<a class="large-link" href="view_score">Main scores page</a>
+</div>
+</p>
+
+<div class="scorechart">
+<h3 class="scorechart-header">Most recent scores</h3>
+{% include "scorechart_fragment.html" with scores=most_recent_score %}
+</div>
+
+{% endblock %}
+

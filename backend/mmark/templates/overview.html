@@ -1,0 +1,259 @@
+{% extends "basepage.html" %}
+
+{% block title %}
+<title>MMark13 - Mobile Graphics Performance Benchmarking: Overview</title>
+{% endblock %}
+
+{% block content %}
+
+<h3 class="header">Recent stuff</h3>
+
+News, olds, and the like.
+
+<ul>
+{% for item in news_items %}
+<li><b>{{ item.added|date:"Y-m-d" }}:</b> {{ item.text|safe }}</li>
+{% endfor %}
+</ul>
+
+<h3 class="header">About the Software</h3>
+
+<p>
+MMark13 is a cross-platform benchmarking application 
+for measuring mobile devices' 
+CPU and graphics performance. It is built right on top of OpenGL ES 2.0 in
+native and portable C/C++, with additional thin layer for platform portability.
+In the design phase this was not just the software architectural goal but 
+became the cornerstone of the whole software suite; to have the same exact code
+running the entire app on every single platform to provide results as 
+comparable as possible. And it is free!
+</p>
+
+<p>
+The test suite features four tests for measuring different things related
+to realtime 2D/3D graphics rendering. Once started, the tests are run
+consecutively and timing data is gathered. After the last test completes, 
+the simplified score is shown on the device screen. 
+After running the tests, you can submit your score to the MMark server; upon
+successful submission, a web page is opened in your device's browser to
+display further information about your device and your score.
+</p>
+
+<div class="stage-clear"></div>
+
+<div class="stage-image">
+<a href="/static/images/fractal_stage.png">
+<img src="/static/images/fractal_stage_thumb.png">
+</a>
+</div>
+
+<div class="stage-desc">
+<h3 class="stage-header">Fractal: CPU Burn Test</h3>
+<p>
+This test measures solely the device's CPU performance. It allocates 4 
+concurrent threads which are used to calculate frames of the famous 
+Mandelbrot fractal set. Each thread calculates every 4th scanline in the image; 
+when all threads have completed the frame, the UI thread is notified and 
+the new image frame is taken into use. The UI thread performs a 2D "zoom" into
+the rendered image while the next image is being calculated to create 
+an illusion of seamless zooming at 60 FPS. Calculation of each pixel requires
+heavy complex number math. Naturally the devices with 4 or more cores will
+benefit most, while devices with a single core will have to do a lot of 
+context switching. 
+</p>
+<p>
+The Mandelbrot set fractal was chosen because it is colorful and pretty and 
+using it
+is a nod towards the demoscene of the 90s but most importantly because it is
+the perfect parallelization problem since each and every pixel can be 
+calculated indenpendently from the others. The score from this stage is calculated
+based on the full Mandelbrot frames calculated, taking into consideration
+the amount of pixels calculated as well as the depth in the set. The CPU score
+is downscaled somewhat since the CPUs effect on 3D rendering is rather low.
+</p>
+</div>
+
+<div class="stage-clear"></div>
+
+<div class="stage-image">
+<a href="/static/images/fillrate_stage.png">
+<img src="/static/images/fillrate_stage_thumb.png">
+</a>
+</div>
+
+<div class="stage-desc">
+<h3 class="stage-header">Fillrate Tests</h3>
+<p>
+The fill rate tests are performed by rendering one frame a high number of
+repetition between glFinish() calls; the time spent is then measured and used
+as score for each test type. In other words, the textured quad is rendered
+several times on top of itself within a single frame to provide 
+more accurate timing data than just doing it once. 
+</p>
+<p>
+First, the textured quad is rendered as is, with no lighting (Unlighted
+fillrate). Then it is rendered through a shader program 
+that calculates the Gouraud-style lighting in the vertex shader 
+(Vertexlighted fillrate); third test
+calculates the lighting in the fragment shader (Pixellighted fillrate). The final
+test calculates the lighting per-pixel in the fragment shader with additional
+specular component; normal/specular maps are also applied (Mapped fillrate).
+</p>
+</div>
+
+<div class="stage-clear"></div>
+
+<div class="stage-image">
+<a href="/static/images/chess_stage.png">
+<img src="/static/images/chess_stage_thumb.png">
+</a>
+</div>
+
+<div class="stage-desc">
+<h3 class="stage-header">Chess: GPU Basic Test</h3>
+<p>
+This test stage measures GPU performance with pretty standard techniques:
+multitexturing, per-pixel lighting, reflections and post-processing effects. 
+The polygon count in the scene is not that high (around 1000-2000 per piece)
+but the post-processing depth-of-field effect applies a lot of load on the GPU.
+The effect is built with a 4-pass approach: first the scene is rendered into a 
+texture, then gaussian blur is applied in both x/y directions and finally 
+the blurred and original image are blended together using the depth value
+as the blending factor. The chessboard features planar reflections of the
+chess pieces; both the pieces and the board also reflect the environment. 
+Everything is per-pixel lighted using the Phong illumination model.
+</p>
+<p>
+As a curiosity, the game played out by the pieces is an actual game 
+between chess grandmasters Garri Kasparov and Jan Timman in 1991 in Amsterdam.
+Visualized are the moves from 24th onwards. The game ended in agreed draw at
+move 29.
+</p>
+</div>
+
+<div class="stage-clear"></div>
+
+<div class="stage-image">
+<a href="/static/images/mountain_stage.png">
+<img src="/static/images/mountain_stage_thumb.png">
+</a>
+</div>
+
+<div class="stage-desc">
+<h3 class="stage-header">Mountains: Game Environment Test</h3>
+<p>
+The final test combines the aspects usually present in high-end games; 
+large geometry, realtime shadows, physics, great viewing distances. The landscape 
+mesh consists of about 120000 polygons, and the other models add up to another 
+roughly 10000. The skybox-aligned sunlight is used as the source for
+lens-flares as well as shadow mapping. Lens-flare occlusion test is done every 
+100 milliseconds if the source is on the screen; shadow maps are calculated every 
+frame even if no shadow caster movement occurs to keep the GPU stressed and 
+the FPS steady. The shadow map size is 2k x 2k. The landscape is rendered 
+by blending two separate ground textures together, blending factor based on the 
+slope of the polygon. The trees/leaves are sorted and blended, and a alpha-based
+discard shader trick is used in their shadow map generation. The buggy model is
+tangent-space normalmapped and per-pixel lighted. 
+The physics engine used is BulletPhysics 2.80, and
+physics calculations are done in the UI thread. The rigid bodies are the
+roman columns, the stone wall, the buggy and a planar "ground". Note that
+on purpose no landscape subdivision / frustum clipping is used to keep 
+the GPU as strained as possible.
+</p>
+</div>
+
+<div class="stage-clear"></div>
+
+<h3 class="header">Scores</h3>
+
+Scores / device information can be submitted to the backend database
+by tapping on the <em>analyze</em> button of the score screen, 
+after the Full Test has completed running.
+An optional user name can be given. Upon submission, the backend uses GeoIP
+to detect the client's approximate location (roughly by city) 
+and displays that information alongside the scores.
+
+<p>
+If the score submission fails, this could be (among other reasons) because:
+</p>
+<ul>
+<li>Network connection is not available
+<li>You're running too old a version
+<li>The server is down
+</ul>
+
+<p>
+<div style="text-align:center">
+<a class="large-link" href="view_score">Score page</a>
+</div>
+</p>
+
+<h3 class="header">Credits &amp; Contact</h3>
+
+<p>
+All design &amp; graphics &amp; implementation by Matti Dahlbom. You can reach 
+the author via e-mail: <em>matti[at]777-team[dot]org</em>. 
+</p>
+
+Additional modeling (licenced under Creative Commons CC-BY or CC-0) 
+credits as follows:
+<ul>
+<li>Stone Wall Segments: Inkman Blender
+<li>Tree model: Kevin Stevens 
+<li>Buggy: Davide Maimone
+<li>Roman column: Maxime Karam
+</ul>
+
+Physics by <emp>Bullet Physics</emp>.
+
+<h3 class="header">Download</h3>
+
+<p>
+See below for current availability on different platforms. For Android 
+installation note that you will be prompted to install an utility app
+called <a href="http://necessitas.kde.org/necessitas/ministro.php">Ministro</a>
+unless you have already installed it; this will be used
+to deliver the Qt runtime libraries to the device. Also note that this 
+software will not run on low-end devices as it requires a lot of RAM 
+as well as resources from the display driver / hardware.
+</p>
+
+<p>
+Future porting plans include
+Sailfish / Blackberry10 / Ubuntu Phone 
+depending on their success. Windows Phone as soon as
+OpenGL support is available.
+</p>
+
+<div class="downloads">
+<a href="https://itunes.apple.com/us/app/mmark13/id593313035?ls=1&mt=8" 
+   title="Available for iOS on App Store" 
+   style="display:inline-block;">
+  <img src="/static/app_store_badge.png">
+</a>
+
+<a href="https://play.google.com/store/apps/details?id=org.dahlbom.matti.mmark&feature=search_result#?t=W251bGwsMSwyLDEsIm9yZy5kYWhsYm9tLm1hdHRpLm1tYXJrIl0."
+   title="Available for Android on Google Play">
+  <img alt="Android app on Google Play" height="40"
+       src="http://developer.android.com/images/brand/en_generic_rgb_wo_45.png" />
+</a>
+</div>
+
+<p>
+The client software is and will be free of ad pollution. Neither will they 
+cost anything, so be a good sport and visit a few Google Ads below (if any).
+</p>
+
+<script type="text/javascript"><!--
+google_ad_client = "ca-pub-7963235443840735";
+/* 336x280, created 1/8/10 */
+google_ad_slot = "8281397677";
+google_ad_width = 336;
+google_ad_height = 280;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+
+{% endblock %}

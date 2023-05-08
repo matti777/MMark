@@ -1,0 +1,157 @@
+{% extends "basepage.html" %}
+
+{% block title %}
+<title>MMark13 - Mobile Benchmarking: Scores</title>
+{% endblock %}
+
+{% block content %}
+
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+  // Load the Visualization API and the piechart package.
+  google.load('visualization', '1.0', {'packages':['corechart','geochart']});
+
+  // Set a callback to run when the Google Visualization API is loaded.
+  google.setOnLoadCallback(drawAllCharts);
+
+  // Also redraw them when window resizes
+  window.onresize = drawAllCharts;
+
+  function drawAlltimeChart() {
+    var data = new google.visualization.DataTable();
+    data.addColumn("string", "Platform");
+    data.addColumn("number", "Score submissions");
+    data.addRows([
+     ["iOS", {{ num_ios_scores }}],
+     ["Android", {{ num_android_scores}}],
+    ]);
+  
+    // Set chart options
+    var options = {"title":"Number of score submissions by platform (all time)",
+                   chartArea: {left:30, width: 220},
+                   "width":240, "height":180};
+  
+    // Instantiate and draw our chart, passing in some options.
+    var chartElement = document.getElementById('alltime_chart_div');
+    var chart = new google.visualization.PieChart(chartElement);
+    chart.draw(data, options);
+  }
+
+  function drawLastmonthChart() {
+    var data = new google.visualization.DataTable();
+    data.addColumn("string", "Platform");
+    data.addColumn("number", "Score submissions");
+    data.addRows([
+     ["iOS", {{ num_ios_scores_month }}],
+     ["Android", {{ num_android_scores_month }}],
+    ]);
+  
+    // Set chart options
+    var options = {"title":
+                   "Number of score submissions by platform (last 30 days)",
+                   chartArea: {left:30, width: 220},
+                   "width":240, "height":180};
+  
+    // Instantiate and draw our chart, passing in some options.
+    var chartElement = document.getElementById('lastmonth_chart_div');
+    var chart = new google.visualization.PieChart(chartElement);
+    chart.draw(data, options);
+  }
+
+  function drawGeoChart() {
+    var data = google.visualization.arrayToDataTable([
+      ['Country', 'Score submissions'],
+{% for country in countries %}
+      ['{{ country.geo_country }}', {{ country.count }}],
+{% endfor %}
+    ]);
+
+    var options = {colorAxis: {minValue:0, colors:['#3333FF','#FF3333']}};
+  
+    var chartElement = document.getElementById('geo_chart_div');
+    var chart = new google.visualization.GeoChart(chartElement);
+    chart.draw(data, options);
+  };
+
+  function drawAllCharts() {
+    drawAlltimeChart();
+    drawLastmonthChart();  
+    drawGeoChart();
+  }
+</script>
+
+<h3 class="scorechart-header">Platform distribution</h3>
+<div class="overall">
+<h4>All time</h4>
+<table>
+<tr>
+<td>Number of iOS score submissions:</td>
+<td>{{ num_ios_scores }}</td>
+</tr>
+<tr>
+<td>Number of Android score submissions:</td>
+<td>{{ num_android_scores }}</td>
+</tr>
+</table>
+
+<h4>Last 30 days</h4>
+<table>
+<tr>
+<td>Number of iOS score submissions:</td>
+<td>{{ num_ios_scores_month }}</td>
+</tr>
+<tr>
+<td>Number of Android score submissions:</td>
+<td>{{ num_android_scores_month }}</td>
+</tr>
+</table>
+</div>
+
+<!--Div that will hold the pie chart-->
+<div class="overall">
+<div class="overall" id="alltime_chart_div"></div>
+<div class="overall" id="lastmonth_chart_div"></div>
+</div>
+
+<div style="clear:both"></div>
+
+<h3 class="scorechart-header">Geographic distribution</h3>
+<div id="geo_chart_div"></div>
+
+<div style="clear:both"></div>
+
+<div class="scorechart">
+<h3 class="scorechart-header">Most recent scores</h3>
+{% include "scorechart_fragment.html" with scores=most_recent_score %}
+</div>
+
+<div class="scorechart">
+<h3 class="scorechart-header">Highest scores by device</h3>
+{% include "scorechart_fragment.html" with scores=device_high_score %}
+</div>
+
+<div class="scorechart">
+<h3 class="scorechart-header">Highest CPU scores by device</h3>
+{% include "scorechart_fragment.html" with scores=cpu_score %}
+</div>
+
+<div class="scorechart">
+<h3 class="scorechart-header">Highest scores for phones</h3>
+{% include "scorechart_fragment.html" with scores=phone_high_score %}
+</div>
+
+<div class="scorechart">
+<h3 class="scorechart-header">Highest scores for tablets</h3>
+{% include "scorechart_fragment.html" with scores=tablet_high_score %}
+</div>
+
+<div style="clear:both"></div>
+
+<p>&nbsp;</p>
+<p>
+<div style="text-align:center">
+<a class="large-link" href="/">Main page</a>
+</div>
+</p>
+
+{% endblock %}
